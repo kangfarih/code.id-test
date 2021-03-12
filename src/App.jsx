@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./App.css";
-import Header from "./components/Header";
 import MainPage from "./pages/MainPage";
 
 class App extends React.Component {
@@ -13,7 +12,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header />
         <MainPage />
         <footer></footer>
       </div>

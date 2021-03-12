@@ -15,7 +15,9 @@ export default function Product(param) {
   if (param.isEndCatalogue) {
     endCatalogue = (
       <div className="end-catalogue">
-        <span>End of Catalogue</span>
+        <span>
+          {param.state._page > 1 ? "End of Catalogue" : "Data Not Found"}
+        </span>
       </div>
     );
   }

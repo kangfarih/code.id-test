@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import Header from "../components/Header";
 import Movies from "../components/Movies";
 import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
@@ -25,6 +26,7 @@ class MainPage extends React.Component {
       DataCache: [],
       _page: 0,
       _sort: "",
+      _filter: "",
       _sortAsc: true,
       _showLoading: false,
       _onFetch: false,
@@ -34,6 +36,8 @@ class MainPage extends React.Component {
     };
 
     this.onchangeSort = this.onchangeSort.bind(this);
+    this.onchangeFilter = this.onchangeFilter.bind(this);
+    this.searchwithFilter = this.searchwithFilter.bind(this);
     this.changeSortType = this.changeSortType.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -58,25 +62,17 @@ class MainPage extends React.Component {
    * @param {Enumerator} type - _TYPE.GET to Replace Product || _TYPE.PUSH to Add Next Products to current product data
    */
   GetMovies = function (type = _TYPE.CACHE, sortVal, _page) {
-    console.log(
-      `Fetch from ${BaseUrlApi}movies?page=${
-        this.state._page
-      }&limit=${LimitFetch}&sortBy=${
-        this.state._sort != ""
-          ? `${this.state._sort}&order=${this.state._sortAsc ? "asc" : "desc"}`
-          : this.state._sort
-      } : ${type}`
-    );
+    let uri = `${BaseUrlApi}movies?page=${
+      this.state._page
+    }&limit=${LimitFetch}&sortBy=${
+      this.state._sort != ""
+        ? `${this.state._sort}&order=${this.state._sortAsc ? "asc" : "desc"}`
+        : this.state._sort
+    }${this.state._filter != "" ? `&filter=${this.state._filter}` : ""}`;
+    console.log(`Fetch from  ${uri}: ${type}`);
+
     _page = this.state._page;
-    fetch(
-      `${BaseUrlApi}movies?page=${
-        this.state._page
-      }&limit=${LimitFetch}&sortBy=${
-        this.state._sort != ""
-          ? `${this.state._sort}&order=${this.state._sortAsc ? "asc" : "desc"}`
-          : this.state._sort
-      }`
-    )
+    fetch(uri)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -153,6 +149,9 @@ class MainPage extends React.Component {
   };
 
   LoadFromCache = function () {
+    if (this.state._endCatalogue) {
+      return;
+    }
     if (this.state.DataCache.length == 0) {
       if (this.state._onFetch) {
         this.setState({ _showLoading: true });
@@ -190,6 +189,7 @@ class MainPage extends React.Component {
       {
         _onFetch: false,
         _sort: sortVal,
+        _endCatalogue: false,
         _page: 0,
         DataCache: [],
         DataMovie: [],
@@ -199,12 +199,38 @@ class MainPage extends React.Component {
       }
     );
   };
+
   changeSortType = function (e) {
     e.preventDefault();
     this.setState(
       {
         _onFetch: false,
         _sortAsc: !this.state._sortAsc,
+        _endCatalogue: false,
+        _page: 0,
+        DataCache: [],
+        DataMovie: [],
+      },
+      () => {
+        this.GetDataCache(true);
+      }
+    );
+  };
+
+  onchangeFilter = function (e) {
+    e.preventDefault();
+    var filterVal = e.target.value;
+    this.setState({
+      _filter: filterVal,
+    });
+  };
+
+  searchwithFilter = function (e) {
+    e.preventDefault();
+    this.setState(
+      {
+        _onFetch: false,
+        _endCatalogue: false,
         _page: 0,
         DataCache: [],
         DataMovie: [],
@@ -259,6 +285,11 @@ class MainPage extends React.Component {
   render() {
     return (
       <Fragment>
+        <Header
+          onchangeFilter={this.onchangeFilter}
+          searchwithFilter={this.searchwithFilter}
+          filter={this.state._filter}
+        />
         <main className="App-main">
           <div className="Main">
             <article className="carousel">
@@ -280,6 +311,7 @@ class MainPage extends React.Component {
               />
             </article>
             <Movies
+              state={this.state}
               data={this.state.DataMovie}
               isLoading={this.state._showLoading}
               isEndCatalogue={this.state._endCatalogue}
