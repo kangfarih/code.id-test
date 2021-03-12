@@ -17,11 +17,20 @@ article, div {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(26, 212, 203, 0.3);
+  background: #79cb9da1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(26, 212, 203, 0.596);
+  background: #79cb9da2;
+}
+
+:root {
+  --main-color: #79CB9C;
+  --main-color-dark: #58a178;
+  --main-color-light: #a5ecc4;
+  --main-color-lightest: #e8fff2;
+  --black: rgb(36, 36, 36);
+  --gray: rgb(100, 100, 100);
 }
 
 /* Default Media : smartphones, portrait iPhone, portrait 480x320 phones (Android) */
@@ -31,7 +40,7 @@ article, div {
   background-color: white;
   min-height: 100vh;
   font-size: 1.6rem;
-  color: #363636;
+  color: var(--black);
 }
 
 .App-header {
@@ -42,12 +51,11 @@ article, div {
 
 /* ANCHOR HEADER */
 
-.App-header{
-  background-color: rgb(26, 212, 203);
-
+.App-header, .header {
+  background-color: var(--main-color);
 }
+
 .header {
-  background-color: rgb(26, 212, 203);
   height: 5rem;
 }
 
@@ -57,6 +65,11 @@ article, div {
 
 .logo {
   display: none;
+}
+
+.logo .image {
+  margin-top: 5%;
+  height: 80%;
 }
 
 /* ANCHOR SEARCH BAR */
@@ -76,16 +89,16 @@ article, div {
 
 .search-bar input:focus {
   outline: none;
-  border: 0.1rem solid rgb(85, 221, 214);
+  border: 0.1rem solid var(--main-color-dark);
 }
 
 .search-bar input[type="text"] {
   padding-left: 2rem;
-  color: rgb(0, 177, 168);
+  color: var(--main-color-dark);
 }
 
 .search-bar input::placeholder {
-  color: rgb(0, 177, 168);
+  color: var(--main-color-dark);
 }
 
 .search-bar button {
@@ -96,13 +109,13 @@ article, div {
   border-radius: 0 1.5rem 1.5rem 0;
   border: 0.1rem solid transparent;
   cursor: pointer;
-  color: rgb(0, 177, 168);
-  background-color: rgb(240, 249, 255);
+  color: var(--main-color-dark);
+  background-color: var(--main-color-lightest);
 }
 
 .search-bar button:focus {
   outline: none;
-  border: 0.1rem solid rgb(85, 221, 214);
+  border: 0.1rem solid var(--main-color-dark);
 }
 
 /* ANCHOR NAV BAR */
@@ -133,6 +146,10 @@ article, div {
   transform: translate(-50%, -50%);
   width: 100%;
   margin: 0rem;
+}
+
+.carousel>h2 {
+  font-size: 4rem;
 }
 
 /* ANCHOR APP MAIN */
@@ -167,7 +184,7 @@ article, div {
   height: 16em;
   width: 90%;
   display: table;
-  background-color: rgba(159, 249, 255, 0.5);
+  background-color: var(--main-color-lightest);
   margin: 1rem auto;
   border-radius: 1rem;
   font-size: 1.2rem;
@@ -216,7 +233,7 @@ article, div {
 .detail-box .price {
   font-size: 1.8em;
   font-weight: 600;
-  color: rgb(12, 163, 173);
+  color: var(--main-color-dark);
 }
 
 .detail-box .date {
@@ -314,7 +331,7 @@ article, div {
 
 .modal-card .box {
   position: absolute;
-  height: 33rem;
+  height: 48rem;
   width: 80%;
   max-width: 50rem;
   background-color: white;
@@ -325,7 +342,7 @@ article, div {
 }
 
 .modal-card .image-box {
-  height: 20rem;
+  height: 30rem;
 }
 
 /* ANCHOR UTILITIES SELECT*/
@@ -333,7 +350,7 @@ article, div {
 .utilities {
   height: 5rem;
   width: 100%;
-  background-color: rgb(26, 212, 203);
+  background-color: var(--main-color);
   color: white;
   margin-bottom: 2rem;
 }
@@ -344,9 +361,15 @@ article, div {
   width: calc(33% - 1rem);
 }
 
+.utilities .filter {
+  width: calc(60% - 1rem);
+  float: left;
+  padding-left: 2rem;
+}
+
 .utilities select {
   height: calc(100% - 2rem);
-  width: calc(100% - 3rem);
+  width: calc(80% - 3rem);
   margin: 1rem 0;
   margin-left: 0.5rem;
   border-radius: .5rem;
@@ -355,7 +378,7 @@ article, div {
 }
 
 .utilities select:focus {
-  border: .1rem solid rgb(0, 177, 168);
+  border: .1rem solid var(--main-color-dark);
   outline: none;
 }
 
@@ -381,6 +404,16 @@ article, div {
 .utilities .sort {
   margin-right: 1rem;
   float: right;
+}
+
+.sort .button {
+  height: calc(100% - 2rem);
+  width: 4rem;
+  margin: 1rem 0;
+  margin-left: 0.5rem;
+  border-radius: .5rem;
+  border: .1rem solid transparent;
+  font-size: 2rem;
 }
 
 .utilities .icon>* {
@@ -495,7 +528,7 @@ article, div {
     height: 100%;
     width: 8rem;
     text-align: center;
-    color: green;
+    color: var(--main-color);
     position: relative;
     cursor: pointer;
     color: white;
@@ -525,9 +558,6 @@ article, div {
     margin: 0.5rem 0.8rem;
     width: calc(50% - 2rem);
     font-size: 1.2rem;
-  }
-  .modal-card .box {
-    height: 37rem;
   }
   .loading.show.full {
     min-height: calc(100vh - 35rem);

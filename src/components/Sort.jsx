@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSort } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSort,
+  faSortDown,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 const _OPTION = {
   DEFAULT: "",
   SHOWTIME: "showTime",
@@ -25,6 +29,12 @@ export default function SortOption(param) {
           );
         })}
       </select>
+      <button className="button">
+        <FontAwesomeIcon
+          icon={param.sortAsc ? faSortUp : faSortDown}
+          onClick={param.changeSortType}
+        />
+      </button>
     </section>
   );
 }

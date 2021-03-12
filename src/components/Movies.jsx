@@ -1,5 +1,5 @@
 import Card, { CardLoading } from "./Card";
-import { BaseUrlApi, LimitFetch, AdsTrigger } from "../pages/MainPage";
+import { BaseUrlApi, LimitFetch } from "../pages/MainPage";
 import { Fragment, Suspense } from "react";
 
 export default function Product(param) {

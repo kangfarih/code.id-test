@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 export const BaseUrlApi = "https://5f50ca542b5a260016e8bfb0.mockapi.io/api/v1/";
-export const AdsTrigger = 20;
+
 const _TYPE = {
   GET: "get",
   PUSH: "push",
@@ -23,10 +23,9 @@ class MainPage extends React.Component {
     this.state = {
       DataMovie: [],
       DataCache: [],
-      DataAds: [],
       _page: 0,
       _sort: "",
-      _sortType: "asc",
+      _sortAsc: true,
       _showLoading: false,
       _onFetch: false,
       _endCatalogue: false,
@@ -35,8 +34,8 @@ class MainPage extends React.Component {
     };
 
     this.onchangeSort = this.onchangeSort.bind(this);
+    this.changeSortType = this.changeSortType.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.AddAds = this.AddAds.bind(this);
   }
 
   // ANCHOR COMPONENT DIDMOUNT
@@ -64,7 +63,7 @@ class MainPage extends React.Component {
         this.state._page
       }&limit=${LimitFetch}&sortBy=${
         this.state._sort != ""
-          ? `${this.state._sort}&order=${this.state._sortType}`
+          ? `${this.state._sort}&order=${this.state._sortAsc ? "asc" : "desc"}`
           : this.state._sort
       } : ${type}`
     );
@@ -74,7 +73,7 @@ class MainPage extends React.Component {
         this.state._page
       }&limit=${LimitFetch}&sortBy=${
         this.state._sort != ""
-          ? `${this.state._sort}&order=${this.state._sortType}`
+          ? `${this.state._sort}&order=${this.state._sortAsc ? "asc" : "desc"}`
           : this.state._sort
       }`
     )
@@ -174,48 +173,10 @@ class MainPage extends React.Component {
           _showLoading: false,
         },
         () => {
-          this.AddAds();
           this.GetDataCache();
         }
       );
     });
-  };
-
-  // ANCHOR ADS GENERATOR
-  /**
-   *  Add New Ads to list
-   */
-  AddAds = function () {
-    var dataProdLength = this.state.DataMovie.length;
-    var adsTrig = AdsTrigger;
-    let adsSum = Math.floor(dataProdLength / adsTrig);
-    var adsList = this.state.DataAds;
-    while (adsList.length < adsSum) {
-      let urlads = `${BaseUrlApi}ads/?r=`;
-
-      /** Make ads randomize and don't repeat same ads in a row
-       *  Check If ads have same last numbe or not
-       *  (last unit of randomize number decide whether ads is same or not)
-       */
-
-      var randomUnit = Math.floor(Math.random() * 1000);
-      var prevAds = adsList.length > 0 ? adsList[adsList.length - 1] : null;
-      if (prevAds) {
-        var pLsUnit = prevAds.substr(prevAds.length - 1);
-        var rLsUnit = randomUnit
-          .toString()
-          .substr(randomUnit.toString().length - 1);
-        while (pLsUnit == rLsUnit) {
-          randomUnit = Math.floor(Math.random() * 1000);
-          rLsUnit = randomUnit
-            .toString()
-            .substr(randomUnit.toString().length - 1);
-        }
-      }
-      urlads = urlads + randomUnit;
-      adsList.push(urlads);
-      this.setState({ DataAds: adsList });
-    }
   };
 
   // ANCHOR EVENT HANDLER
@@ -232,7 +193,21 @@ class MainPage extends React.Component {
         _page: 0,
         DataCache: [],
         DataMovie: [],
-        DataAds: [],
+      },
+      () => {
+        this.GetDataCache(true);
+      }
+    );
+  };
+  changeSortType = function (e) {
+    e.preventDefault();
+    this.setState(
+      {
+        _onFetch: false,
+        _sortAsc: !this.state._sortAsc,
+        _page: 0,
+        DataCache: [],
+        DataMovie: [],
       },
       () => {
         this.GetDataCache(true);
@@ -290,14 +265,6 @@ class MainPage extends React.Component {
               <h2>MOVIES CATALOGUE</h2>
             </article>
             <article className="utilities">
-              <section className="category">
-                <span className="icon">
-                  <FontAwesomeIcon icon={faBook} />
-                </span>
-                <select name="" id="" disabled>
-                  <option value="Category">Category</option>
-                </select>
-              </section>
               <section className="filter">
                 <span className="icon">
                   <FontAwesomeIcon icon={faFilter} />
@@ -306,17 +273,18 @@ class MainPage extends React.Component {
                   <option value="Filter">Filter</option>
                 </select>
               </section>
-              <SortOption onChangeFunc={this.onchangeSort} />
+              <SortOption
+                onChangeFunc={this.onchangeSort}
+                changeSortType={this.changeSortType}
+                sortAsc={this.state._sortAsc}
+              />
             </article>
             <Movies
-              ads={this.state.DataAds}
               data={this.state.DataMovie}
               isLoading={this.state._showLoading}
               isEndCatalogue={this.state._endCatalogue}
               toggleModal={this.toggleModal}
             />
-
-            {/* <button onClick={this.clickUpdate}>Update</button> */}
           </div>
         </main>
         <ModalCard
