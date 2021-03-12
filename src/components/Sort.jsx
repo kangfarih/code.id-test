@@ -29,11 +29,8 @@ export default function SortOption(param) {
           );
         })}
       </select>
-      <button className="button">
-        <FontAwesomeIcon
-          icon={param.sortAsc ? faSortUp : faSortDown}
-          onClick={param.changeSortType}
-        />
+      <button className="button" onClick={param.changeSortType}>
+        <FontAwesomeIcon icon={param.sortAsc ? faSortUp : faSortDown} />
       </button>
     </section>
   );
