@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Movies from "../components/Movies";
 import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
@@ -26,6 +26,7 @@ class MainPage extends React.Component {
       DataAds: [],
       _page: 0,
       _sort: "",
+      _sortType: "asc",
       _showLoading: false,
       _onFetch: false,
       _endCatalogue: false,
@@ -59,11 +60,23 @@ class MainPage extends React.Component {
    */
   GetMovies = function (type = _TYPE.CACHE, sortVal, _page) {
     console.log(
-      `Fetch from ${BaseUrlApi}movies?page=${this.state._page}&limit=${LimitFetch}&sort=${this.state._sort} : ${type}`
+      `Fetch from ${BaseUrlApi}movies?page=${
+        this.state._page
+      }&limit=${LimitFetch}&sortBy=${
+        this.state._sort != ""
+          ? `${this.state._sort}&order=${this.state._sortType}`
+          : this.state._sort
+      } : ${type}`
     );
     _page = this.state._page;
     fetch(
-      `${BaseUrlApi}movies?page=${this.state._page}&limit=${LimitFetch}&sort=${this.state._sort}`
+      `${BaseUrlApi}movies?page=${
+        this.state._page
+      }&limit=${LimitFetch}&sortBy=${
+        this.state._sort != ""
+          ? `${this.state._sort}&order=${this.state._sortType}`
+          : this.state._sort
+      }`
     )
       .then((res) => res.json())
       .then(
@@ -270,43 +283,48 @@ class MainPage extends React.Component {
   // ANCHOR RENDER ( )
   render() {
     return (
-      <div className="Main">
-        <article className="carousel">
-          <h2>MOVIES CATALOGUE</h2>
-        </article>
-        <article className="utilities">
-          <section className="category">
-            <span className="icon">
-              <FontAwesomeIcon icon={faBook} />
-            </span>
-            <select name="" id="" disabled>
-              <option value="Category">Category</option>
-            </select>
-          </section>
-          <section className="filter">
-            <span className="icon">
-              <FontAwesomeIcon icon={faFilter} />
-            </span>
-            <select name="" id="" disabled>
-              <option value="Filter">Filter</option>
-            </select>
-          </section>
-          <SortOption onChangeFunc={this.onchangeSort} />
-        </article>
-        <Movies
-          ads={this.state.DataAds}
-          data={this.state.DataMovie}
-          isLoading={this.state._showLoading}
-          isEndCatalogue={this.state._endCatalogue}
-          toggleModal={this.toggleModal}
-        />
+      <Fragment>
+        <main className="App-main">
+          <div className="Main">
+            <article className="carousel">
+              <h2>MOVIES CATALOGUE</h2>
+            </article>
+            <article className="utilities">
+              <section className="category">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faBook} />
+                </span>
+                <select name="" id="" disabled>
+                  <option value="Category">Category</option>
+                </select>
+              </section>
+              <section className="filter">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faFilter} />
+                </span>
+                <select name="" id="" disabled>
+                  <option value="Filter">Filter</option>
+                </select>
+              </section>
+              <SortOption onChangeFunc={this.onchangeSort} />
+            </article>
+            <Movies
+              ads={this.state.DataAds}
+              data={this.state.DataMovie}
+              isLoading={this.state._showLoading}
+              isEndCatalogue={this.state._endCatalogue}
+              toggleModal={this.toggleModal}
+            />
+
+            {/* <button onClick={this.clickUpdate}>Update</button> */}
+          </div>
+        </main>
         <ModalCard
           show={this.state._showModal}
           toggleModal={this.toggleModal}
           data={this.state.DataMovie.length > 1 ? this.state._modalData : ""}
         />
-        {/* <button onClick={this.clickUpdate}>Update</button> */}
-      </div>
+      </Fragment>
     );
   }
 }

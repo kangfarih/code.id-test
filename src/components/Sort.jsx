@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 const _OPTION = {
   DEFAULT: "",
-  PRICE: "price",
-  SIZE: "size",
+  SHOWTIME: "showTime",
+  TITLE: "title",
+  LIKE: "like",
   ID: "id",
 };
 

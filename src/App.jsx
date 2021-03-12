@@ -10,16 +10,11 @@ class App extends React.Component {
     this.state = { title: "Web App" };
   }
 
-
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <Header />
-        </header>
-        <main className="App-main">
-          <MainPage />
-        </main>
+        <Header />
+        <MainPage />
         <footer></footer>
       </div>
     );

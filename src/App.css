@@ -42,6 +42,10 @@ article, div {
 
 /* ANCHOR HEADER */
 
+.App-header{
+  background-color: rgb(26, 212, 203);
+
+}
 .header {
   background-color: rgb(26, 212, 203);
   height: 5rem;
@@ -537,8 +541,9 @@ article, div {
   .App {
     margin: auto;
   }
-  .App .App-header, .App .App-main, .App {
+  .Main, .header {
     max-width: 128rem;
+    margin: auto;
   }
   .carousel {
     min-height: 25rem;
